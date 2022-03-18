@@ -107,8 +107,10 @@ void AAIC_Base::ChangeProfessionType_Implementation(Profesion_Type newProfession
 			{
 			case Profesion_Type::Lumberjack:
 				UAC_ProfessionLumberjack* lumberjackProfession = NewObject<UAC_ProfessionLumberjack>(this);
-			//	GetOwner()->CreateDefaultSubobject<UAC_ProfessionLumberjack>(TEXT("Lumberjack_ProfessionComponent"));
-				UE_LOG(LogTemp, Warning, TEXT("UAC_Lumberjack created"));
+				lumberjackProfession->RegisterComponent();
+				//	GetOwner()->CreateDefaultSubobject<UAC_ProfessionLumberjack>(TEXT("Lumberjack_ProfessionComponent"));
+				FString ownersName = GetPawn()->GetFName().ToString();
+				UE_LOG(LogTemp, Warning, TEXT("UAC_Lumberjack created in %s"), *ownersName);
 				break;
 
 			}
