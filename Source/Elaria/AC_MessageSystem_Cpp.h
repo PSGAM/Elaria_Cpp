@@ -45,10 +45,6 @@ public:
 
 	const FName MessageSystemComponent_TagName = "MessageSystemComponent_Tag";
 
-//	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ProfessionSystem")
-//	TEnumAsByte<Profesion_Type> OwnersProfession = Profesion_Type::None;
-
-
 protected:
 	UPROPERTY(VisibleAnywhere)
 	UBoxComponent* BoxComponent = nullptr;

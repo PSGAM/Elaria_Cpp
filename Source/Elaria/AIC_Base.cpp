@@ -31,11 +31,6 @@ AAIC_Base::AAIC_Base()
 
 AAIC_Base::~AAIC_Base()
 {
-	/*
-	if(GetWorldTimerManager().TimerExists(TH_HungerTick))
-	{
-		GetWorldTimerManager().ClearTimer(TH_HungerTick);
-	}*/
 }
 
 void AAIC_Base::HungerTick()
@@ -80,11 +75,56 @@ void AAIC_Base::StartNecessitiesTimers()
 	}
 }
 
+void AAIC_Base::ChangeProfessionType_Implementation(Profesion_Type newProfession)
+{
+	currentProfessionEnum = newProfession;
+
+//	FString ownersName = GetOwner()->GetName();
+//	UE_LOG(LogTemp, Warning, TEXT("Profession on actor [ %s ] has changed to: %s"), *ownersName, newProfession);
+	
+
+	if (currentProfessionEnum != Profesion_Type::None)
+	{
+		// Clean previous profession components
+
+		if (GetPawn())
+		{
+			TArray<UAC_ProfessionBase*> professionComponents;
+			GetPawn()->GetComponents(professionComponents);
+
+			for (auto i : professionComponents)
+			{
+				if (i)
+				{
+					UAC_ProfessionBase* child = i;
+					child->DestroyComponent();
+				}
+			}
+
+
+			// Create the new component
+			switch (currentProfessionEnum)
+			{
+			case Profesion_Type::Lumberjack:
+				UAC_ProfessionLumberjack* lumberjackProfession = NewObject<UAC_ProfessionLumberjack>(this);
+			//	GetOwner()->CreateDefaultSubobject<UAC_ProfessionLumberjack>(TEXT("Lumberjack_ProfessionComponent"));
+				UE_LOG(LogTemp, Warning, TEXT("UAC_Lumberjack created"));
+				break;
+
+			}
+		}
+	}
+}
+
 
 void AAIC_Base::BeginPlay()
 {
 	Super::BeginPlay();
 
+
 	UE_LOG(LogTemp, Warning, TEXT("Starting necessity timers."));
 	StartNecessitiesTimers();
+
+//	UE_LOG(LogTemp, Warning, TEXT("Profession on actor [ %s ] is: %s"), *ownersName, currentProfessionEnum);
+
 }

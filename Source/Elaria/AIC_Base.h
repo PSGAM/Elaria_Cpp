@@ -4,6 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+//#include "Profession_Enum.h"
+#include "AIC_Interface.h"
+#include "AC_ProfessionBase.h"
+#include "AC_ProfessionLumberjack.h"
 #include "AIC_Base.generated.h"
 
 struct BasicNecessitiesStruct
@@ -33,7 +37,7 @@ struct BasicNecessityInfo
 };
 
 UCLASS()
-class ELARIA_API AAIC_Base : public AAIController
+class ELARIA_API AAIC_Base : public AAIController, public IAIC_Interface
 {
 	GENERATED_BODY()
 	
@@ -41,6 +45,7 @@ public:
 	// Sets default values for this actor's properties
 	AAIC_Base();
 	~AAIC_Base();
+
 
 public:
 	void HungerTick();
@@ -52,7 +57,17 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+public:
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "AIC_Interface")
+	void ChangeProfessionType(Profesion_Type newProfession);
+	virtual void ChangeProfessionType_Implementation(Profesion_Type newProfession);
+	
 private:
+//	FString ownersName = "DEFAULT_OWNERS_NAME";
+
+	// Profession
+	TEnumAsByte<Profesion_Type> currentProfessionEnum = Profesion_Type::None;
 	
 	BasicNecessitiesStruct basicNecessities;
 	
@@ -67,4 +82,5 @@ private:
 	// Thirst
 	BasicNecessityInfo sleepInfo;
 	FTimerHandle TH_SleepTick;
+
 };
