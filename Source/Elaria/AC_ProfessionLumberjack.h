@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AC_ProfessionBase.h"
+#include "AIController.h"
 #include "AC_ProfessionLumberjack.generated.h"
 
 // List of the available profesions
@@ -15,7 +16,7 @@ enum Lumberjack_State_Type {
 
 UENUM(BlueprintType)
 enum Lumberjack_WorkState_Type {
-	FindTreeToChop_State = 0 UMETA(DisplayName = "Searching for a treeto chop down"),
+	FindTreeToChop_State = 0 UMETA(DisplayName = "Searching for a tree to chop down"),
 	GoToTree_State = 1 UMETA(DisplayName = "Going to chop down a tree"),
 	ChopDownTree_State = 2 UMETA(DisplayName = "Choping down tree"),
 //	ReplantTree_State = 3 UMETA(DisplayName = "Replanting tree"),
@@ -23,7 +24,6 @@ enum Lumberjack_WorkState_Type {
 	RefineLog_State = 5 UMETA(DisplayName = "Refining log into lumber"),
 	CarryLumber_State = 6 UMETA(DisplayName = "Carring lumber"),
 };
-
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent), Blueprintable)
 class ELARIA_API UAC_ProfessionLumberjack : public UAC_ProfessionBase
@@ -44,10 +44,15 @@ public:
 	void FinishedCurrentWorkState();
 	void FindRandomTreeNearby();
 
+	void AIMovementCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result);
+
 protected:
 	Lumberjack_State_Type currentGeneralState = Lumberjack_State_Type::Work_State;
 	Lumberjack_WorkState_Type currentWorkState = Lumberjack_WorkState_Type::FindTreeToChop_State;
 
 	AActor* targetActor = nullptr;
 	FVector targetLocation;
+
+	AAIController* ownersAIController = nullptr;
+
 };

@@ -17,23 +17,27 @@ void UAC_ProfessionLumberjack::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (GetOwner()->GetInstigatorController()->IsPlayerController() == false)
+	{
+		// Save a reference to the owner's AIController for movement behaviour
+		ownersAIController = Cast<AAIController>(GetOwner()->GetInstigatorController());
+
+		// Call a function (AIMovementCompleted) when the movement has ended
+		ownersAIController->GetPathFollowingComponent()->OnRequestFinished.AddUObject(this, &UAC_ProfessionLumberjack::AIMovementCompleted);
+	}
+
 	UE_LOG(LogTemp, Warning, TEXT("Starting Lumberjack profession component."));
 
 	
 	// Timer test
 	FTimerHandle TH_WorkTickTEST;
-	GetWorld()->GetTimerManager().SetTimer(TH_WorkTickTEST, this, &UAC_ProfessionLumberjack::FindRandomTreeNearby, 2.0f, true);
+	GetWorld()->GetTimerManager().SetTimer(TH_WorkTickTEST, this, &UAC_ProfessionLumberjack::FindRandomTreeNearby, 2.0f, false);
 	
 }
 
 void UAC_ProfessionLumberjack::FinishedCurrentWorkState()
 {
-	// UE_LOG(LogTemp, Warning, TEXT("Lumberjack's function is called after 2 seconds!!!"));
-	/*switch (currentGeneralState)
-	{
-		case Lumberjack_State_Type::Idle_State
 		
-	}*/
 }
 
 void UAC_ProfessionLumberjack::FindRandomTreeNearby()
@@ -58,4 +62,15 @@ void UAC_ProfessionLumberjack::FindRandomTreeNearby()
 		targetActor = OutHits[getRandomIndex].GetActor();
 		UE_LOG(LogTemp, Warning, TEXT("Search nearby tree: [ %s ]"), *targetActor->GetFName().ToString());
 	}
+
+	if (ownersAIController)
+	{
+		ownersAIController->MoveToActor(targetActor);
+	}
+	
+}
+
+void UAC_ProfessionLumberjack::AIMovementCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Movement completed."));
 }
