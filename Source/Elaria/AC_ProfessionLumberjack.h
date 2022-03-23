@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "AC_ProfessionBase.h"
-#include "AIController.h"
 #include "AC_ProfessionLumberjack.generated.h"
 
 // List of the available profesions
@@ -44,15 +43,15 @@ public:
 	void FinishedCurrentWorkState();
 	void FindRandomTreeNearby();
 
-	void AIMovementCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result);
+	void AIMovementCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
 
-protected:
+private:
 	Lumberjack_State_Type currentGeneralState = Lumberjack_State_Type::Work_State;
 	Lumberjack_WorkState_Type currentWorkState = Lumberjack_WorkState_Type::FindTreeToChop_State;
 
-	AActor* targetActor = nullptr;
-	FVector targetLocation;
+//	AActor* targetActor = nullptr;
+//	FVector targetLocation;
 
-	AAIController* ownersAIController = nullptr;
+//	AAIController* ownersAIController = nullptr;
 
 };

@@ -19,8 +19,40 @@ void UAC_ProfessionBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	if (GetOwner()->GetInstigatorController()->IsPlayerController() == false)
+	{
+		// Save a reference to the owner's AIController for movement behaviour
+		ownersAIController = Cast<AAIController>(GetOwner()->GetInstigatorController());
+	}
 	
+
+	// Check if the owner has a MessageSystemComponent, otherwise spawn it
+	TInlineComponentArray<UActorComponent*> OwnersComponents;
+	UActorComponent* currentComponentBeingChecked;
+	bool bFoundMessageComponent = false;
+	GetOwner()->GetComponents(OwnersComponents);
+	if (OwnersComponents.Num() > 0) {
+		for (int32 CompIdx = 0; CompIdx < OwnersComponents.Num(); CompIdx++)
+		{
+			currentComponentBeingChecked = OwnersComponents[CompIdx];
+
+			//if (currentComponentBeingChecked->GetName() == "PointOfInterestBoxCollision")
+			if (currentComponentBeingChecked->GetName() == "AC_MessageSystem_Cpp" || 
+				currentComponentBeingChecked->GetName() == "AC_MessageSystem_BP")
+			{
+				messageSystemComponent = Cast<UAC_MessageSystem_Cpp>(currentComponentBeingChecked);
+				bFoundMessageComponent = true;
+			}
+		}
+	}
+	if (bFoundMessageComponent == false)
+	{
+		messageSystemComponent = NewObject<UAC_MessageSystem_Cpp>(GetOwner());
+		GetOwner()->AddOwnedComponent(messageSystemComponent);
+
+		UE_LOG(LogTemp, Warning, TEXT("MessageSystem Component has been successfully created by the base profession."));
+	}
+
 }
 
 
@@ -30,5 +62,10 @@ void UAC_ProfessionBase::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UAC_ProfessionBase::AIMovementCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
+{
+	// Implement on children if needed.
 }
 

@@ -93,7 +93,7 @@ void UAC_MessageSystem_Cpp::EndPlay(EEndPlayReason::Type Reason)
 	{
 		BoxComponent->DestroyComponent();
 		BoxComponent->SetActive(false);
-		UE_LOG(LogTemp, Warning, TEXT("MessageSystem Component has been destroyed."));
+		UE_LOG(LogTemp, Warning, TEXT("MessageSystem Component has been successfully destroyed."));
 	}
 
 	GetOwner()->Tags.Remove(MessageSystemComponent_TagName);

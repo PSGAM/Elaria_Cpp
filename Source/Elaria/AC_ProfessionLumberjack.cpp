@@ -19,12 +19,11 @@ void UAC_ProfessionLumberjack::BeginPlay()
 
 	if (GetOwner()->GetInstigatorController()->IsPlayerController() == false)
 	{
-		// Save a reference to the owner's AIController for movement behaviour
-		ownersAIController = Cast<AAIController>(GetOwner()->GetInstigatorController());
-
 		// Call a function (AIMovementCompleted) when the movement has ended
 		ownersAIController->GetPathFollowingComponent()->OnRequestFinished.AddUObject(this, &UAC_ProfessionLumberjack::AIMovementCompleted);
 	}
+
+	
 
 	UE_LOG(LogTemp, Warning, TEXT("Starting Lumberjack profession component."));
 
