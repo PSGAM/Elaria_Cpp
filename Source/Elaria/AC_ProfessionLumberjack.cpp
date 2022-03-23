@@ -72,4 +72,17 @@ void UAC_ProfessionLumberjack::FindRandomTreeNearby()
 void UAC_ProfessionLumberjack::AIMovementCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Movement completed."));
+
+	/*if (targetActor->GetClass()->ImplementsInterface(POI_Tree_Interface::StaticClass()))
+	{
+		POI_Tree_Interface::Execute_Interact(YourActor); // This is the Execute_* function. The asterisk means your function name. :)
+	}*/
+	if (targetActor->GetClass()->ImplementsInterface(UPOI_Tree_Interface::StaticClass()))
+	{
+		//UPOI_Tree_Interface::Execute_BPI_CutDown(targetActor);
+		IPOI_Tree_Interface::Execute_BPI_CutDown(targetActor);
+	}
+
+	FTimerHandle TH_WorkTickTEST;
+	GetWorld()->GetTimerManager().SetTimer(TH_WorkTickTEST, this, &UAC_ProfessionLumberjack::FindRandomTreeNearby, 2.0f, false);
 }

@@ -24,5 +24,5 @@ class ELARIA_API IAIC_Interface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "AIC_Interface")
-	void ChangeProfessionType(Profesion_Type newProfession);
+	void BPI_ChangeProfessionType(Profesion_Type newProfession);
 };

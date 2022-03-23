@@ -75,7 +75,7 @@ void AAIC_Base::StartNecessitiesTimers()
 	}
 }
 
-void AAIC_Base::ChangeProfessionType_Implementation(Profesion_Type newProfession)
+void AAIC_Base::BPI_ChangeProfessionType_Implementation(Profesion_Type newProfession)
 {
 	currentProfessionEnum = newProfession;
 

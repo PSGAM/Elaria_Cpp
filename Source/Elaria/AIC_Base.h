@@ -60,8 +60,8 @@ protected:
 public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "AIC_Interface")
-	void ChangeProfessionType(Profesion_Type newProfession);
-	virtual void ChangeProfessionType_Implementation(Profesion_Type newProfession);
+	void BPI_ChangeProfessionType(Profesion_Type newProfession);
+	virtual void BPI_ChangeProfessionType_Implementation(Profesion_Type newProfession);
 	
 private:
 //	FString ownersName = "DEFAULT_OWNERS_NAME";
