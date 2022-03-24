@@ -88,3 +88,8 @@ void UAC_PointOfInterest_C::POI_ActivateCollision()
 {
 	BoxComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3, ECollisionResponse::ECR_Block);
 }
+
+PointOfInterest_Type UAC_PointOfInterest_C::GetPOIType()
+{
+	return PointOfInterest_Type_enum;
+}

@@ -41,6 +41,8 @@ void UAC_ProfessionLumberjack::FinishedCurrentWorkState()
 
 void UAC_ProfessionLumberjack::FindRandomTreeNearby()
 {
+	targetActor = nullptr;
+
 	TArray<FHitResult> OutHits;
 	FCollisionShape customCollisionSphere = FCollisionShape::MakeSphere(1500.f);
 
@@ -57,14 +59,30 @@ void UAC_ProfessionLumberjack::FindRandomTreeNearby()
 
 	if (isHit)
 	{
-		int getRandomIndex = FMath::RandRange(0, OutHits.Num() - 1);
-		targetActor = OutHits[getRandomIndex].GetActor();
-		UE_LOG(LogTemp, Warning, TEXT("Search nearby tree: [ %s ]"), *targetActor->GetFName().ToString());
+		/// Get only the hits matching the POIType
+		TArray<FHitResult> POI_TreeOutHits;
+		
+		for (auto i : OutHits)
+		{
+			UAC_PointOfInterest_C* currentPOIComponent = i.GetActor()->FindComponentByClass<UAC_PointOfInterest_C>();
+			if (currentPOIComponent != nullptr)
+			{
+				if (currentPOIComponent->GetPOIType() == PointOfInterest_Type::POI_Tree)
+				{
+					POI_TreeOutHits.Add(i);
+				}
+			}
+		}
+
+		// Get a random tree from the hits of type POI_Tree
+		if (POI_TreeOutHits.Num() > 0)
+		{
+			int getRandomIndex = FMath::RandRange(0, POI_TreeOutHits.Num() - 1);
+			targetActor = POI_TreeOutHits[getRandomIndex].GetActor();
+			UE_LOG(LogTemp, Warning, TEXT("Search nearby tree: [ %s ]"), *targetActor->GetFName().ToString());
+		}
 	}
-	else
-	{
-		targetActor = nullptr;
-	}
+	
 
 	if (ownersAIController && targetActor)
 	{

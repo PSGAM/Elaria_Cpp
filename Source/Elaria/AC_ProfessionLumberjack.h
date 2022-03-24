@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AC_ProfessionBase.h"
 #include "POI_Tree_Interface.h"
+#include "AC_PointOfInterest_C.h"
 #include "AC_ProfessionLumberjack.generated.h"
 
 // List of the available profesions
