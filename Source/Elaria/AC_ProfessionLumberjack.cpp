@@ -36,6 +36,24 @@ void UAC_ProfessionLumberjack::BeginPlay()
 
 void UAC_ProfessionLumberjack::FinishedCurrentWorkState()
 {
+	switch (currentWorkState)
+	{
+	case FindTreeToChop_State:
+		ownersAIController->GetPawn()->SetActorRotation(FRotationMatrix::MakeFromX(targetActor->GetActorLocation() - GetOwner()->GetActorLocation()).Rotator());
+		currentWorkState = ChopDownTree_State;
+		UE_LOG(LogTemp, Warning, TEXT("Rotated to nearby tree: [ %s ]"), *targetActor->GetFName().ToString());
+		break;
+	case ChopDownTree_State:
+		break;
+	case ReplantTree_State:
+		break;
+	case CarryLog_State:
+		break;
+	case RefineLog_State:
+		break;
+	case CarryLumber_State:
+		break;
+	}
 		
 }
 
@@ -93,13 +111,8 @@ void UAC_ProfessionLumberjack::FindRandomTreeNearby()
 
 void UAC_ProfessionLumberjack::AIMovementCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
-	// UE_LOG(LogTemp, Warning, TEXT("Movement completed."));
-
-	if (targetActor->GetClass()->ImplementsInterface(UPOI_Tree_Interface::StaticClass()))
-	{
-		IPOI_Tree_Interface::Execute_BPI_CutDown(targetActor);
-	}
-
-	FTimerHandle TH_WorkTickTEST;
-	GetWorld()->GetTimerManager().SetTimer(TH_WorkTickTEST, this, &UAC_ProfessionLumberjack::FindRandomTreeNearby, 2.0f, false);
+	FinishedCurrentWorkState();
+	
+//	FTimerHandle TH_WorkTickTEST;
+//	GetWorld()->GetTimerManager().SetTimer(TH_WorkTickTEST, this, &UAC_ProfessionLumberjack::FindRandomTreeNearby, 2.0f, false);
 }
