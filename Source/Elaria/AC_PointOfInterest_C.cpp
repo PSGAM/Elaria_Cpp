@@ -78,3 +78,13 @@ void UAC_PointOfInterest_C::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 	// ...
 }
+
+void UAC_PointOfInterest_C::POI_DeactivateCollision()
+{
+	BoxComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3, ECollisionResponse::ECR_Ignore);
+}
+
+void UAC_PointOfInterest_C::POI_ActivateCollision()
+{
+	BoxComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3, ECollisionResponse::ECR_Block);
+}

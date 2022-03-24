@@ -22,9 +22,9 @@ class ELARIA_API IPOI_Tree_Interface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "POI_Tree_Interface")
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "POI_Tree_Interface")
 	void BPI_CutDown();
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "POI_Tree_Interface")
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "POI_Tree_Interface")
 	void BPI_ReplantTree();
 };

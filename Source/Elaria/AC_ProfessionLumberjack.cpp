@@ -61,25 +61,24 @@ void UAC_ProfessionLumberjack::FindRandomTreeNearby()
 		targetActor = OutHits[getRandomIndex].GetActor();
 		UE_LOG(LogTemp, Warning, TEXT("Search nearby tree: [ %s ]"), *targetActor->GetFName().ToString());
 	}
-
-	if (ownersAIController)
+	else
 	{
-		ownersAIController->MoveToActor(targetActor);
+		targetActor = nullptr;
+	}
+
+	if (ownersAIController && targetActor)
+	{
+		ownersAIController->MoveToActor(targetActor, 50.f);
 	}
 	
 }
 
 void UAC_ProfessionLumberjack::AIMovementCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Movement completed."));
+	// UE_LOG(LogTemp, Warning, TEXT("Movement completed."));
 
-	/*if (targetActor->GetClass()->ImplementsInterface(POI_Tree_Interface::StaticClass()))
-	{
-		POI_Tree_Interface::Execute_Interact(YourActor); // This is the Execute_* function. The asterisk means your function name. :)
-	}*/
 	if (targetActor->GetClass()->ImplementsInterface(UPOI_Tree_Interface::StaticClass()))
 	{
-		//UPOI_Tree_Interface::Execute_BPI_CutDown(targetActor);
 		IPOI_Tree_Interface::Execute_BPI_CutDown(targetActor);
 	}
 

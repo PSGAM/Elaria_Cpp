@@ -27,6 +27,12 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UFUNCTION(BlueprintCallable)
+	void POI_DeactivateCollision();
+
+	UFUNCTION(BlueprintCallable)
+	void POI_ActivateCollision();
+
 public:	
 	const FName PointOfInterestComponent_TagName = "PointOfInterestComponent_Tag";
 
