@@ -22,16 +22,21 @@ void UAC_ProfessionLumberjack::BeginPlay()
 		// Call a function (AIMovementCompleted) when the movement has ended
 		ownersAIController->GetPathFollowingComponent()->OnRequestFinished.AddUObject(this, &UAC_ProfessionLumberjack::AIMovementCompleted);
 	}
-
-	
-
 	UE_LOG(LogTemp, Warning, TEXT("Starting Lumberjack profession component."));
-
-	
+		
 	// Timer test
 	FTimerHandle TH_WorkTickTEST;
 	GetWorld()->GetTimerManager().SetTimer(TH_WorkTickTEST, this, &UAC_ProfessionLumberjack::FindRandomTreeNearby, 2.0f, false);
 	
+	if (messageSystemComponent != nullptr)
+	{
+		// Call a function (AIMovementCompleted) when the movement has ended
+		//ownersAIController->GetPathFollowingComponent()->OnRequestFinished.AddUObject(this, &UAC_ProfessionLumberjack::AIMovementCompleted);
+		//messageSystemComponent->ReceiveMSG_Delegate.AddUObject(this, &UAC_ProfessionLumberjack::LumberjackReceiveMSG);
+		//messageSystemComponent->ReceiveMSG_Delegate.Add(FLumberjackReceiveMSG_Delegate);
+		messageSystemComponent->ReceiveMSG_Delegate.AddDynamic(this, &UAC_ProfessionLumberjack::LumberjackReceiveMSG);
+	}
+
 }
 
 void UAC_ProfessionLumberjack::FinishedCurrentWorkState()
@@ -40,10 +45,14 @@ void UAC_ProfessionLumberjack::FinishedCurrentWorkState()
 	{
 	case FindTreeToChop_State:
 		ownersAIController->GetPawn()->SetActorRotation(FRotationMatrix::MakeFromX(targetActor->GetActorLocation() - GetOwner()->GetActorLocation()).Rotator());
-		currentWorkState = ChopDownTree_State;
+		currentWorkState = ChopingDownTree_State;
 		UE_LOG(LogTemp, Warning, TEXT("Rotated to nearby tree: [ %s ]"), *targetActor->GetFName().ToString());
+		if (messageSystemComponent != nullptr)
+		{
+			messageSystemComponent->SendMSG(messageSystemComponent->actorID, ChopingDownTree_State, 2.0f);
+		}
 		break;
-	case ChopDownTree_State:
+	case ChopingDownTree_State:
 		break;
 	case ReplantTree_State:
 		break;
@@ -115,4 +124,9 @@ void UAC_ProfessionLumberjack::AIMovementCompleted(FAIRequestID RequestID, const
 	
 //	FTimerHandle TH_WorkTickTEST;
 //	GetWorld()->GetTimerManager().SetTimer(TH_WorkTickTEST, this, &UAC_ProfessionLumberjack::FindRandomTreeNearby, 2.0f, false);
+}
+
+void UAC_ProfessionLumberjack::LumberjackReceiveMSG(FMessageInfo newMessage)
+{
+	UE_LOG(LogTemp, Warning, TEXT("MSG recieved on Lumberjack!!!!"));
 }

@@ -14,6 +14,8 @@ class ELARIA_API UAC_MessageSystem_Cpp : public UActorComponent
 {
 	GENERATED_BODY()
 
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FReceiveMSG_Signature, FMessageInfo, newMessage);
+
 public:	
 	// Sets default values for this component's properties
 	UAC_MessageSystem_Cpp();
@@ -31,7 +33,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SendMSG(int32 Receiver, int32 msg, float Delay);
 
-	UFUNCTION(BlueprintNativeEvent)
+	//UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION()
 	void ReceiveMSG(FMessageInfo newMessage);
 
 
@@ -44,6 +47,9 @@ public:
 	int32 actorID = -1;
 
 	const FName MessageSystemComponent_TagName = "MessageSystemComponent_Tag";
+
+	UPROPERTY(BlueprintAssignable, meta = (DisplayName = "MSG_Received"))
+	FReceiveMSG_Signature ReceiveMSG_Delegate;
 
 protected:
 	UPROPERTY(VisibleAnywhere)

@@ -19,7 +19,7 @@ UENUM(BlueprintType)
 enum Lumberjack_WorkState_Type {
 	FindTreeToChop_State = 0 UMETA(DisplayName = "Searching for a tree to chop down"),
 //	GoToTree_State = 1 UMETA(DisplayName = "Going to chop down a tree"),
-	ChopDownTree_State = 1 UMETA(DisplayName = "Choping down tree"),
+	ChopingDownTree_State = 1 UMETA(DisplayName = "Choping down tree"),
 	ReplantTree_State = 2 UMETA(DisplayName = "Replanting tree"),
 	CarryLog_State = 3 UMETA(DisplayName = "Carring log"),
 	RefineLog_State = 4 UMETA(DisplayName = "Refining log into lumber"),
@@ -31,7 +31,8 @@ class ELARIA_API UAC_ProfessionLumberjack : public UAC_ProfessionBase
 {
 	GENERATED_BODY()
 
-
+//	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLumberjackReceiveMSG_Signature, FMessageInfo, newMessage);
+	
 public:
 	// Sets default values for this actor's properties
 	UAC_ProfessionLumberjack();
@@ -46,14 +47,14 @@ public:
 	void FindRandomTreeNearby();
 
 	void AIMovementCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
+	
+	UFUNCTION()
+	void LumberjackReceiveMSG(FMessageInfo newMessage);
+
+//	FLumberjackReceiveMSG_Signature FLumberjackReceiveMSG_Delegate;
 
 private:
 	Lumberjack_State_Type currentGeneralState = Lumberjack_State_Type::Work_State;
 	Lumberjack_WorkState_Type currentWorkState = Lumberjack_WorkState_Type::FindTreeToChop_State;
-
-//	AActor* targetActor = nullptr;
-//	FVector targetLocation;
-
-//	AAIController* ownersAIController = nullptr;
 
 };

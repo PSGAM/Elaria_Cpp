@@ -124,8 +124,12 @@ void UAC_MessageSystem_Cpp::SendMSG(int32 Receiver, int32 msg, float Delay)
 	}
 }
 
-void UAC_MessageSystem_Cpp::ReceiveMSG_Implementation(FMessageInfo newMessage)
+//void UAC_MessageSystem_Cpp::ReceiveMSG_Implementation(FMessageInfo newMessage)
+void UAC_MessageSystem_Cpp::ReceiveMSG(FMessageInfo newMessage)
 {
-
+//	if (ReceiveMSG_Delegate.IsBound())
+//	{
+		ReceiveMSG_Delegate.Broadcast(newMessage);
+//	}
 
 }
